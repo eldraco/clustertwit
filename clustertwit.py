@@ -15,7 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # clustertwit.py
 # Author: Sebastian Garcia. eldraco@gmail.com, @eldracote
-# Thanks to @vero.valeros for the thinking sessions and the creation of the dataset
+# Thanks to @verovaleros for the thinking sessions and the creation of the dataset
 """
 
 # clustertwit.py is a quick hack/implementation for grouping twits based on a special concept of similarity.
@@ -29,27 +29,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # - Delete all the chars ,'!.  This is to consider similar words with these chars at the end.
 
 # To use this software is very useful to tune two thresholds depending on what you want.
-# 1. The self.minimum_amount_of_matching_words in the TwitGroup class. 
+# 1. The -w parameter controls this. 
 # This is for controling how many words should be similar to be accepted in a groupa. We found that 2 is ok.
 # 2. When showing the final groups, which groups to show. That is controled by counting the amount of twits in the groups.
-# The variable minimum_amount_of_twits_to_show_the_group controls that. This is a really a interface issue that should be controled 
-# depending on what you want to show to the user.
+# The parameter -t controls that. This is a really a interface issue that should be controled depending on what you want to show to the user.
 
-# Also use the verbose variable to control what you see and some debuging
+# Also use the verbose -v parameter to control what you see and some debuging
 
 # To use it, just cat a file with twits and give it as stdin to this program
 # Example:
 # cat TestDataset | python ./clustertwit.py
 
-# It works in Linux and IOSX at least
+# It works in Linux and OSX at least
 
-import re
 import sys
+import argparse
+
 
 twitts_groups=[]
 groups_id = 0
-verbose = 0
-minimum_amount_of_twits_to_show_the_group = 3
+version = '0.1'
 
 class Twit():
     """ Class to hold all the info of one twit"""
@@ -77,11 +76,11 @@ class Twit():
 
 class TwitGroup():
     """ Class to hold a group of twits that are similar """
-    def __init__(self, id):
+    def __init__(self, id, min_words):
         self.id = id + 1
         self.twits = []
         self.group_words = []
-        self.minimum_amount_of_matching_words = 2
+        self.minimum_amount_of_matching_words = min_words
 
     def accept(self, twit):
         """ Receives a twit object and decided if it is accepted in the group or not """
@@ -89,10 +88,10 @@ class TwitGroup():
         # Dont process twits that were already grouped
         if twit.group:
             return False
-        if verbose > 2:
+        if args.verbose > 2:
             print '\tWords in group: {}'.format(self.group_words)
         for word in twit.v_text:
-            if verbose > 3:
+            if args.verbose > 3:
                 print '\t\tTrying word: {}'.format(word)
             # Check if the current word is in this group
             try:
@@ -101,7 +100,7 @@ class TwitGroup():
             except ValueError:
                 # Not in the list
                 pass
-        if verbose > 2:
+        if args.verbose > 2:
             print '\tFinal amount: {}'.format(amount)
         # If all of the words in the twit matched... dont accept it. So we delete duplicate twits.
         if amount > 0 and amount == len(twit.v_text):
@@ -130,27 +129,40 @@ class TwitGroup():
     def __repr__(self):
         return 'Group {}. Amount of twits: {}'.format(self.id, len(self.twits))
 
-# 
+
+####################
+# Main
+####################
+print 'ClusterTwit. Version {}\n'.format(version)
+
+# Parse the parameters
+parser = argparse.ArgumentParser()
+parser.add_argument('-w', '--words', help='Minimum amount of words in each twit that should be equal to the words in the group.', action='store', default = 2, type=int, required=False)
+parser.add_argument('-t', '--twitts', help='Only show the groups with this amount of twitts inside.', action='store', default = 3, required=False, type=int)
+parser.add_argument('-v', '--verbose', help='Verbosity.', action='store', default = 1, required=False)
+args = parser.parse_args()
+
+
 # Start by reading the lines from stdin
 for line in sys.stdin:
     # Avoid empty lines
     newtwit = Twit(line.strip())
-    if verbose > 1:
+    if args.verbose > 1:
         print 'Processing twit: {}'.format(newtwit.original_text)
     for group in twitts_groups:
         group.accept(newtwit)
     # If the twit was not accepted, create a new group for it
     if not newtwit.group:
-        newgroup = TwitGroup(groups_id)
+        newgroup = TwitGroup(groups_id, args.words)
         newgroup.add_twit(newtwit)
         twitts_groups.append(newgroup)
         groups_id += 1
 
 # Print groups
 print 
-print 'Final Groups:'
+print 'Final Groups with more than {} twits.'.format(args.twitts)
 for group in twitts_groups:
-    if len(group.twits) > minimum_amount_of_twits_to_show_the_group:
+    if len(group.twits) > args.twitts:
         print group
         group.print_twits()
 
