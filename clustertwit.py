@@ -34,6 +34,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # The variable minimum_amount_of_twits_to_show_the_group controls that. This is a really a interface issue that should be controled 
 # depending on what you want to show to the user.
 
+# Also use the verbose variable to control what you see and some debuging
+
 # To use it, just cat a file with twits and give it as stdin to this program
 # Example:
 # cat TestDataset | python ./clustertwit.py

@@ -18,6 +18,8 @@ To use this software is very useful to tune two thresholds depending on what you
 2. When showing the final groups, which groups to show. That is controled by counting the amount of twits in the groups.
     The variable minimum_amount_of_twits_to_show_the_group controls that. This is a really a interface issue that should be controled depending on what you want to show to the user.
 
+Also use the verbose variable to control what you see and some debuging
+
 ## Usage
 To use it, just cat a file with twits and give it as stdin to this program
 Example:
