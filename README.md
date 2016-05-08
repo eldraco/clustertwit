@@ -12,12 +12,13 @@ Twits are "cleaned":
 
 ## Tunning the thresholds
 To use this software is very useful to tune two thresholds depending on what you want.
-1. The self.minimum_amount_of_matching_words in the TwitGroup class. 
-This is for controling how many words should be similar to be accepted in a groupa. We found that 2 is ok.
-2. When showing the final groups, which groups to show. That is controled by counting the amount of twits in the groups.
-The variable minimum_amount_of_twits_to_show_the_group controls that. This is a really a interface issue that should be controled 
-depending on what you want to show to the user.
 
+1. The self.minimum_amount_of_matching_words in the TwitGroup class. 
+    This is for controling how many words should be similar to be accepted in a groupa. We found that 2 is ok.
+2. When showing the final groups, which groups to show. That is controled by counting the amount of twits in the groups.
+    The variable minimum_amount_of_twits_to_show_the_group controls that. This is a really a interface issue that should be controled depending on what you want to show to the user.
+
+## Usage
 To use it, just cat a file with twits and give it as stdin to this program
 Example:
 cat TestDataset | python ./clustertwit.py
