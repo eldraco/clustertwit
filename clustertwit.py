@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # To use it, just cat a file with twits and give it as stdin to this program
 # Example:
-# cat dataset | python ./clustertwit.py
+# cat TestDataset | python ./clustertwit.py
 
 # It works in Linux and IOSX at least
 
