@@ -13,10 +13,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# clustertwit.py
 # Author: Sebastian Garcia. eldraco@gmail.com
 """
 
-# This is a quick hack/implementation for grouping twits based on a special concept of similarity.
+# clustertwit.py is a quick hack/implementation for grouping twits based on a special concept of similarity.
 #
 # We group the twits that have more than N words identical to words in the group.
 # If the twit is accepted in a group, its words are added to the group
@@ -35,7 +36,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # To use it, just cat a file with twits and give it as stdin to this program
 # Example:
-# cat dataset | ./
+# cat dataset | python ./clustertwit.py
+
+# It works in Linux and IOSX at least
 
 import re
 import sys
