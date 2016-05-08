@@ -14,7 +14,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # clustertwit.py
-# Author: Sebastian Garcia. eldraco@gmail.com
+# Author: Sebastian Garcia. eldraco@gmail.com, @eldracote
+# Thanks to @vero.valeros for the thinking sessions and the creation of the dataset
 """
 
 # clustertwit.py is a quick hack/implementation for grouping twits based on a special concept of similarity.
