@@ -26,3 +26,6 @@ Example:
 cat TestDataset | python ./clustertwit.py
 
 It works in Linux and IOSX at least
+
+# Authors
+This program was done by Sebastian Garcia, eldraco@gmail.com (@eldracote). Thanks to @vero.valeros for the thinking sessions and the creation of the dataset.
