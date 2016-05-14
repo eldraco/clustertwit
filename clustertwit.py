@@ -1,4 +1,4 @@
-#!/usr/bin/pyhton
+#!/usr/bin/python
 """
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -132,16 +132,31 @@ class TwitGroup():
         for word in twit.v_text:
             self.group_words.append(word)
         self.twits.append(twit)
+
+    def get_twits(self):
+        """ Print all the twits in this group"""
+        text = ''
+        for twit in self.twits:
+            text += twit.__repr__() + '<br>'
+        return text
     
     def print_twits(self):
         """ Print all the twits in this group"""
         for twit in self.twits:
             print '\t', twit
-            #print twit.filtered_text
 
     def __repr__(self):
         return 'Group {}. Amount of twits: {}'.format(self.id, len(self.twits))
 
+def print_web():
+    text = '<html>'
+    text = '<h1>Final Groups with more than {} twits.</h1><br><br>'.format(args.twitts)
+    for group in twitts_groups:
+        if len(group.twits) > args.twitts:
+            text += '<h2>' +  group.__repr__() + '</h2>' + '<br>'
+            text += group.get_twits()
+    text += '</html>'
+    return text
 
 ####################
 # Main
@@ -154,7 +169,9 @@ parser.add_argument('-w', '--words', help='Minimum amount of words in each twit 
 parser.add_argument('-t', '--twitts', help='Only show the groups with this amount of twitts inside.', action='store', default = 3, required=False, type=int)
 parser.add_argument('-v', '--verbose', help='Verbosity.', action='store', default = 1, required=False)
 parser.add_argument('-T', '--twitter', help='Use twitter API. See code for keys.', action='store_true', required=False)
+parser.add_argument('-W', '--web', help='Open a web page and show the results there.', action='store_true', required=False)
 args = parser.parse_args()
+
 
 if args.twitter:
     print 'Getting your tweets to the file twitter-cache.tmp'
@@ -180,7 +197,7 @@ if args.twitter:
         print tweet.text
     file.close()
     file_all.close()
-else:
+elif args.words:
     # Start by reading the lines from stdin
     for line in sys.stdin:
         # Avoid empty lines
@@ -195,7 +212,6 @@ else:
             newgroup.add_twit(newtwit)
             twitts_groups.append(newgroup)
             groups_id += 1
-
     # Print groups
     print 
     print 'Final Groups with more than {} twits.'.format(args.twitts)
@@ -203,4 +219,16 @@ else:
         if len(group.twits) > args.twitts:
             print group
             group.print_twits()
+
+if args.web:
+    from flask import Flask
+    app = Flask(__name__)
+
+    @app.route('/')
+    def hello_world():
+        text = print_web()
+        return text
+
+    app.run(host='0.0.0.0', port=8180)
+    app.debug = True
 
