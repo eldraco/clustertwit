@@ -153,7 +153,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-w', '--words', help='Minimum amount of words in each twit that should be equal to the words in the group.', action='store', default = 2, type=int, required=False)
 parser.add_argument('-t', '--twitts', help='Only show the groups with this amount of twitts inside.', action='store', default = 3, required=False, type=int)
 parser.add_argument('-v', '--verbose', help='Verbosity.', action='store', default = 1, required=False)
-parser.add_argument('-T', '--twitter', help='Use twitter API. See code for keys.', action='store_true', required=False)
+parser.add_argument('-T', '--twitter', help='Use twitter API to download twitts(see code for keys). If not, read twitts from stdin.', action='store_true', required=False)
 args = parser.parse_args()
 
 if args.twitter:
